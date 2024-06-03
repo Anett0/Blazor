@@ -1,0 +1,4 @@
+﻿namespace ProjectInit.WebUI.Models
+{
+
+}

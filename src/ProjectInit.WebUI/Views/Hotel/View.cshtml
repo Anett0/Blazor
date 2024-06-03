@@ -1,0 +1,160 @@
+﻿@using ProjectInit.Core.Entities
+@model Hotel
+https://github.com/oa-ek/csharpproject-tim0n-pumba/pull/10/conflict?name=ProjectInit-main%252Fsrc%252FProjectInit.WebUI%252FViews%252FHotel%252FView.cshtml&ancestor_oid=35f83fcda4ceeb0e13186d497c62883de15a2b65&base_oid=eb26e67113aee3f7b406819cbd544db7e2d576e0&head_oid=67d11d449a3651e92e232d1faa910f20aee91213
+
+
+<h1 class="text-4xl"><strong>Деталі готелю @Model.Name</strong></h1>
+<div>
+    <div>
+        <img class="ImgHeiWid" src="/@Model.ImagePath" alt="Hotel Image" />
+        <dl class="row">
+            <dt class="col-sm-2">Адреса:</dt>
+            <dd class="col-sm-10">@Model.Zipcode, @Model.City, @Model.Addres</dd>
+
+            <dt class="col-sm-2">Опис:</dt>
+            <dd class="col-sm-10">@Model.Description</dd>
+        </dl>
+    </div>
+    @* Map info *@
+    <div class="py-2">
+        <div id="map"></div>
+    </div>
+    @*Код для добавлення сервісів до готелю*@
+    <div>
+        <div class="mb-2">
+            <a class="btn btn-primary" asp-controller="Service" asp-action="Create" asp-route-hotelId="@Model.Id">Добавити сервіс</a>
+        </div>
+    </div>
+    
+    
+    @* Карткі для покупок *@
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+        @foreach (var service in Model.Services)
+        {
+            <div class="card text-center bg-base-100 shadow-lg w-64 h-auto">
+                <div class="card-body">
+                    <h2 class="card-title">@string.Join(", ",service.Name)</h2>
+                    <p class="card-text">
+                        @string.Join(", ",service.Description)
+                    </p>
+
+                    <p class="text-xl font-bold">$@string.Join(", ", service.Amount)/Per Day</p>
+                    <form asp-controller="Booking" asp-action="Rent" asp-route-hotelId="@Model.Id" asp-route-serviceId="@service.Id">
+                        <a href="/Booking/Rent/?serviceId=@service.Id&hotelId=@Model.Id" class="btn btn-primary">Зняти</a>
+                    </form>
+                    
+                    <form asp-controller="Service" asp-action="Edit" asp-route-hotelId="@Model.Id" asp-route-serviceId="@service.Id">
+                        <a href="/Service/Edit/@service.Id?hotelId=@Model.Id"  class="btn btn-warning">Редактувати</a>
+                    </form>
+                    <form asp-controller="Service" asp-action="Delete" asp-route-hotelId="@Model.Id" asp-route-serviceId="@service.Id">
+                        <button class="btn btn-danger mr-2 rounded hover:bg-red-600 bg-red-500 px-2 py-1 text-white">Delete</button>
+                    </form>
+                    
+
+
+                </div>
+            </div>
+        }
+    </div>
+    @* Рейтинг та отзиви *@
+    <footer>
+        <hr class="m-2" />
+        <h2 class="text-2xl">Отзиви</h2>
+        
+        <div>
+            <form asp-controller="Review" asp-action="Create" asp-route-hotelId="@Model.Id">
+                <div class="form-group">
+                    <label>Рейтинг:</label>
+                    <div>
+                        <div>
+                            <div class="my-rating-4"></div>
+                            <input type="hidden" id="Rating" name="Rating" />
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="Created" value="@DateTime.Now" />
+                <div class="form-group">
+                    <label for="Comment">Отзив:</label>
+                    <textarea id="Comment" name="Comment" class="border-2 p-1" style="width: 100%;"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Добавити отзив</button>
+            </form>
+        </div>
+        <hr class="m-2" />
+        <h2 class="text-2xl">Отзиви</h2>
+        <div>
+            @foreach (var review in Model.Reviews)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Рейтинг: @review.Rating</h5>
+                        <p class="card-text">By @review.UserName</p>
+                        <p class="card-text">Коментар: @review.Comment</p>
+
+                        <p class="card-text">Дата: @review.Created</p>
+                        <form asp-controller="Review" asp-action="Delete" asp-route-hotelId="@Model.Id" asp-route-reviewId="@review.Id">
+                            <button class="btn btn-danger mr-2 rounded hover:bg-red-600 bg-red-500 px-2 py-1 text-white">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </footer>
+</div>
+
+<style>
+    .ImgHeiWid{
+        height: 350px;
+        width: 350px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto
+    }
+
+    #map{
+        border: 2px solid green;
+        border-radius: 10px;
+        height: 325px;
+        width: 325px;
+    }
+</style>
+
+@section Scripts {
+    <script src="~/js/jquery.star-rating-svg.js"></script>
+    <link href="~/css/star-rating-svg.css" rel="stylesheet" />
+    <script src="~/leaflet/leaflet.min.js"></script>
+    <link href="~/leaflet/leaflet.min.css" rel="stylesheet" />
+    
+    <script>
+
+        $(function () {
+            $(".my-rating-4").starRating({
+                initialRating: 5.0,
+                starSize: 25,
+                useFullStars: true,
+                callback: function (currentRating, $el) {
+                    $("#Rating").val(parseFloat(currentRating));
+                }
+            });
+        });
+
+            
+        //Script for map
+        $(function () {
+            var map = L.map('map').setView([@Model.Latitude, @Model.Longitude], 13);
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+=======
+    </dl>
+</div>
+
+            L.marker([@Model.Latitude, @Model.Longitude]).addTo(map)
+                .bindPopup('@Model.Name <br> @Model.Zipcode, @Model.City, @Model.Addres')
+                .openPopup();
+        });
+    </script>
+}

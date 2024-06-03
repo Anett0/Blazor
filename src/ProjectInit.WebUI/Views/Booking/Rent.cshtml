@@ -1,0 +1,63 @@
+﻿@using ProjectInit.Core.Entities
+@model Booking
+
+<header>
+    <h1 class="text-4xl"> Орендувати готель </h1>
+</header>
+
+<form asp-controller="Booking" asp-action="Rent" asp-route-hotelId="@Model.HotelId">
+    <div class="form-group">
+        <label for="StartDate">Day of arrival</label>
+        <input type="date" id="StartDate" name="StartDate" min="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="EndDate">Day of departure</label>
+        <input type="date" id="EndDate" name="EndDate" min="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control" />
+    </div>
+    <div class="form-group mt-2">
+        <label for="TotalAmountHidden">Total amount:</label>
+        <span id="total-amount">@Model.TotalAmount</span>
+        <input type="hidden" id="TotalAmountHidden" asp-for="TotalAmount" />
+        <button type="button" class="btn btn-info" id="TotalAmountCheck">Calculate Total Amount</button>
+    </div>
+    <div class="form-group">
+        <label for="PetId">Select a pet:</label>
+        <select class="form-control" id="PetId" name="PetId" asp-items="@(new SelectList(Model.Pet, "Id", "Name"))"></select>
+    </div>
+    <div>
+        @* Мая зберігати status = "На обработці" *@
+        <input type="hidden" value="Обробляється" asp-for="Status" />
+    </div>
+    <div class="form-group mt-2">
+        <button class="btn btn-primary">Rent</button>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+    <script>
+        $('#TotalAmountCheck').on('click', function () {
+            let startDate = new Date($('#StartDate').val());
+            let endDate = new Date($('#EndDate').val());
+            let daysBetween = (endDate - startDate) / (1000 * 3600 * 24);
+            let totalAmount = 0;
+
+        @foreach (var service in Model.Services)
+        {
+            <text>
+                    totalAmount += @service.Amount * daysBetween;
+            </text>
+        }
+
+                    if (totalAmount === 0) {
+                console.error('Error: Total amount is 0');
+            } else {
+                console.log(`Total amount: ${totalAmount}`);
+                $('#TotalAmountHidden').val(totalAmount); // update hidden field
+                $(this).text(`Total amount: ${totalAmount}`); // update button text
+            }
+            return false;
+        });
+    </script>
+}

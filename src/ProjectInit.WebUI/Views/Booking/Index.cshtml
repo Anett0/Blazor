@@ -1,0 +1,81 @@
+﻿@using Microsoft.EntityFrameworkCore
+@using ProjectInit.Core.Entities
+@using ProjectInit.Repositories.Hotel
+@using ProjectInit.Repositories.Pet
+@using ProjectInit.Repositories.Users
+
+@inject ProjectInit.Core.Context.ProjectContext _ctx
+
+@model List<Booking>
+
+<head>
+    <link href="~/tailwindcss/tailwind.css" rel="stylesheet" />
+</head>
+
+<body>
+    <header>
+        <div>
+            <h1 class="text-4xl">Ваші заброньовані готелі</h1>
+        </div>
+    </header>
+    <div class="pt-3">
+        <a class="ml-2 mt-3 rounded-md bg-indigo-500 p-2 text-white hover:bg-indigo-600" href="/Booking/AdminP">Admin Panel</a>
+    </div>
+    <div class="container mx-auto mt-8">
+        @foreach (var booking in Model)
+        {
+            <div class="bg-white rounded-lg shadow-md p-6 mb-4">
+                <p><strong class="text-gray-700">Дата початку:</strong> @booking.StartDate</p>
+                <p><strong class="text-gray-700">Дата закінчення:</strong> @booking.EndDate</p>
+                <p>
+                    <strong class="text-gray-700">Готель:</strong>
+                    @if (booking.HotelId.HasValue)
+                    {
+                        var hotelRepository = new HotelRepository(_ctx);
+                        var hotel = await hotelRepository.GetAsync(booking.HotelId.Value);
+                        <a href="/Hotel/View/@booking.HotelId">@hotel.Name</a>
+                    }
+                    else
+                    {
+                        <text>Unknown hotel</text>
+                    }
+                </p>
+                <p><strong class="text-gray-700">Тотальна кількість:</strong> @booking.TotalAmount$</p>
+                <p><strong class="text-gray-700">Статус:</strong> @booking.Status</p>
+                <p>
+                    <strong class="text-gray-700">Назва тварини:</strong>
+                    @if (booking.PetId.HasValue)
+                    {
+                        var petRepository = new PetRepository(_ctx);
+                        var pet = await petRepository.GetAsync(booking.PetId.Value);
+                        <a href="/Pet/View/@booking.PetId">@pet.Name</a>
+                    }
+                    else
+                    {
+                        <text>Unknown pet</text>
+                    }
+                </p>
+                <p>
+                    <strong class="text-gray-700">Юзер нейм:</strong>
+                    @if (booking.UserId.HasValue)
+                    {
+                        var userRepository = new UserRepository(_ctx);
+                        var user = await userRepository.GetAsync(booking.UserId.Value);
+                        <text>@user.UserName</text>
+                    }
+                    else
+                    {
+                        <text>Unknown user</text>
+                    }
+                </p>
+                <div class="flex">
+                    <form asp-controller="Booking" asp-action="BookingCenceled" asp-route-Id="@booking.Id">
+                        <button class="btn btn-danger mr-2 rounded hover:bg-red-600 bg-red-500 px-2 py-1 text-white">Cancel</button>
+                    </form>
+                </div>
+
+            </div>
+        }
+    </div>
+    
+</body>

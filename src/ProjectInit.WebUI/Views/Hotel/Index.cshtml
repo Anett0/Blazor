@@ -1,0 +1,118 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@using ProjectInit.Core.Entities
+@model List<ProjectInit.Core.Entities.Hotel>
+
+@{
+    ViewData["Title"] = "Список готелів";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link href="~/tailwindcss/tailwind.css" rel="stylesheet" />
+    
+</head>
+
+<header>
+    <div class="container-fluid align-items-center">
+        <div class="row justify-content-center">
+            <div class="col-md-9 text-center">
+                <h1 class="text-4xl">@ViewData["Title"]</h1>
+                <div>
+                    <a href="/Hotel/Create" class="btn btn-success float-end">Додати готель</a>
+                </div>
+                <hr />
+            </div>
+        </div>
+    </div>
+
+</header>
+
+<body>
+    <div style="display: flex;">
+        <div class="pt-2">
+            <div class="h-auto sticky left-0 top-0 w-80 bg-white p-4 shadow-md">
+                <div class="flex items-center">
+                    <label for="filter" class="sr-only">Filter</label>
+                    <input id="filter" type="search" class="block w-full rounded-md border p-2 focus:border-indigo-500 focus:ring-indigo-500" placeholder="Search..." />
+                    <button class="ml-2 rounded-md bg-indigo-500 p-2 text-white hover:bg-indigo-600">Search</button>
+                </div>
+                <div class="mt-4">
+                    <select class="border-1 ">
+                        <option value="price_asc" selected>Ціна (від низької до високої)</option>
+                        <option value="price_desc">Ціна (від високої до низької)</option>
+                        <option value="rating">Сортувати за рейтингом</option>
+                    </select>
+                    <button class="ml-2 mt-3 rounded-md bg-indigo-500 p-2 text-white hover:bg-indigo-600">Accept</button>
+                </div>
+            </div>
+        </div>
+        <div class="flex-1">
+            @foreach (var hotel in Model)
+            {
+                double averageRating = hotel.Reviews.Any() ? (hotel.Reviews.Average(r => r.Rating) ?? 0) : 0;
+                <div class="w-100">
+                    <div class="bg-gray-150 relative m-2 flex rounded-lg border-2 p-3 shadow-md">
+                        <div class="rounded-lg flex-shrink-0 mr-5">
+                            <img src="@hotel.ImagePath" alt="Image" class="h-56 w-56 rounded-md" />
+                        </div>
+                        <div class="flex-grow">
+                            <h2 class="mt-3 text-lg font-bold">@hotel.Name</h2>
+                            <p class="text-gray-600">@hotel.Zipcode,@hotel.City,@hotel.Addres</p>
+                            <p class="text-gray-600">
+                                @if (!string.IsNullOrEmpty(hotel.Description))
+                                {
+                                    @if (hotel.Description.Length > 150)
+                                    {
+                                        @hotel.Description.Substring(0, 150) @Html.Raw("... <a class='text-blue-500'' href='/Hotel/View/" + hotel.Id + "'>Читати більше</a>")
+                                    }
+                                    else
+                                    {
+                                        @hotel.Description
+                                    }
+                                }
+                            </p>
+                            <div class="rating py-1">
+                                <div id="map"></div>
+                                @for (int i = 0; i < 5; i++)
+                                {
+                                    if (i < averageRating)
+                                    {
+                                        <i class="fas fa-star text-yellow-500"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fas fa-star text-gray-300"></i>
+                                    }
+                                }
+                            </div>
+
+                            <div class="flex justify-start">
+                                <a href="/Hotel/View/@hotel.Id" class="btn btn-primary mr-2 rounded hover:bg-indigo-600 bg-blue-500 px-2 py-1 text-white">Детально</a>
+                                <a href="/Hotel/Edit/@hotel.Id" class="btn btn-warning mr-2 rounded hover:bg-green-600 bg-green-500 px-2 py-1 text-white">Редагувати</a>
+                                <form asp-action="Delete" method="post" asp-route-id="@hotel.Id">
+                                    <input type="hidden" asp-for="@hotel.Id" />
+                                    <button type="submit" class="btn btn-danger mr-2 rounded hover:bg-red-600 bg-red-500 px-2 py-1 text-white">Видалення</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        
+    
+    </div>
+    
+</body>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/js/jquery.star-rating-svg.js"></script>
+    <link href="~/css/star-rating-svg.css" rel="stylesheet" />
+    <script>
+        
+    </script>
+}
+
+

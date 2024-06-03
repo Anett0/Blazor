@@ -1,0 +1,36 @@
+﻿@using ProjectInit.Core.Entities
+@model Pet
+
+<h1>Нова тварина</h1>
+
+<form action="@Url.Action("Create", "Pet")" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+    <div class="mb-3">
+        @Html.DisplayNameFor(model => model.Name)
+        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+        <span asp-validation-for="Name" class="text-danger" />
+    </div>
+    <div class="mb-3">
+        @Html.DisplayNameFor(model => model.Type)
+        @Html.TextBoxFor(model => model.Type, new { @class = "form-control" })
+        <span asp-validation-for="Type" class="text-danger" />
+    </div>
+
+    <div class="form-group mt-3">
+        @Html.DisplayNameFor(model => model.ImageFile)
+        <input asp-for="ImageFile" accept="image/*" />
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
+    </div>
+
+    <div class="d-flex justify-content-center my-3">
+        <button class="btn btn-primary" type="submit">Зберегти</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

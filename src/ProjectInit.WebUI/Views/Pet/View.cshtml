@@ -1,0 +1,21 @@
+@using ProjectInit.Core.Entities
+@model Pet
+
+<div class="book-info-container">
+    <img src="/@Model.ImagePath" alt="Pet Image" />
+    <div class="book-info-details">
+        <div>
+            <h4>Інформація про тварину:</h4>
+
+            <dl class="row">
+                <dt class="col-sm-2">Ім'я:</dt>
+                <dd class="col-sm-10">@Model.Name</dd>
+
+                <dt class="col-sm-2">Тип:</dt>
+                <dd class="col-sm-10">@Model.Type</dd>
+
+
+
+            </dl>
+        </div>
+    </div>

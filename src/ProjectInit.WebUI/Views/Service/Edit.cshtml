@@ -1,0 +1,40 @@
+﻿@using ProjectInit.Core.Entities
+@model Service
+
+<h1>Edit Service</h1>
+
+<form action="@Url.Action("Edit", "Service", new { id = Model.Id })" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="@Model.HotelId" />
+    @Html.HiddenFor(model => model.HotelId, new { Value = ViewBag.HotelId })
+
+
+    <div class="mb-3">
+        @Html.DisplayNameFor(model => model.Name)
+        @foreach (var name in Model.Name)
+        {
+            @Html.TextBox("Name", name, new { @class = "form-control" })
+        }
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        @Html.DisplayNameFor(model => model.Description)
+        @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        @Html.DisplayNameFor(model => model.Amount)
+        @Html.TextBoxFor(model => model.Amount, new { @class = "form-control" })
+        <span asp-validation-for="Amount" class="text-danger"></span>
+    </div>
+
+    
+    <div class="d-flex justify-content-center my-3">
+        <a href="/Hotel/View/@Model.HotelId" style="margin-right: 2px;" class="btn btn-warning">Cancel</a>
+        <button class="btn btn-primary" style="margin-left: 2px;" type="submit">Save</button>
+    </div>
+</form>

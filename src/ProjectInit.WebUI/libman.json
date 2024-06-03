@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "leaflet@1.9.4",
+      "destination": "wwwroot/leaflet/"
+    },
+    {
+      "library": "tailwindcss@2.2.19",
+      "destination": "wwwroot/tailwindcss/"
+    },
+    {
+      "library": "leaflet-locatecontrol@0.81.0",
+      "destination": "wwwroot/leaflet-locatecontrol/"
+    },
+    {
+      "library": "Leaflet.EasyButton@2.4.0",
+      "destination": "wwwroot/Leaflet.EasyButton/"
+    }
+  ]
+}

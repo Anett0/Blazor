@@ -1,0 +1,29 @@
+﻿@using ProjectInit.Core.Entities
+
+@* @{
+    ViewData["Title"] = "Home Page";
+} *@
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    
+    <div class="py-2">
+        <div id="map"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/leaflet/leaflet.min.js"></script>
+    <link href="~/leaflet/leaflet.min.css" rel="stylesheet" />
+
+    <script>
+        
+        $(function () {
+            var map = L.map('map').setView([50.421118919183115, 30.515624983236197], 13);
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+        });
+    </script>
+}

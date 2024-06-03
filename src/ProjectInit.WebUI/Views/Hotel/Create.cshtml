@@ -1,0 +1,136 @@
+﻿@using ProjectInit.Core.Entities
+@model Hotel
+
+
+<h1>Новий готель</h1>
+
+<form action="@Url.Action("Create", "Hotel")" method="post" enctype="multipart/form-data">
+    @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+
+    <div class="mb-3">
+        @Html.DisplayNameFor(model => model.Name)
+        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+        <span asp-validation-for="Name" class="text-danger" />
+    </div>
+    <div class="mb-3">
+        @Html.DisplayNameFor(model => model.Zipcode)
+        @Html.TextBoxFor(model => model.Zipcode, new { @class = "form-control" })
+        <span asp-validation-for="Zipcode" class="text-danger" />
+    </div>
+    <div class="mb-3">
+        @Html.DisplayNameFor(model => model.City)
+        @Html.TextBoxFor(model => model.City, new { @class = "form-control" })
+        <span asp-validation-for="City" class="text-danger" />
+    </div>
+    <div class="mb-3">
+        @Html.DisplayNameFor(model => model.Addres)
+        @Html.TextBoxFor(model => model.Addres, new { @class = "form-control" })
+        <span asp-validation-for="Addres" class="text-danger" />
+    </div>
+    <div class="mb-3">
+        @Html.DisplayNameFor(model => model.Description)
+        @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+        <span asp-validation-for="Description" class="text-danger" />
+    </div>
+    
+    @* Сюда слід добавити показ загруженної картинки користувачм *@
+    <div class="form-group mt-3">
+        @Html.DisplayNameFor(model => model.ImageFile)
+        <input asp-for="ImageFile" accept="image/*" />
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
+    </div>
+    @* Set hotel location on map and submit to database *@
+    <div class="py-2">
+        <div id="map"></div>
+    </div>
+    @* bring location coordinate *@
+    <div class="row justify-content-center align-items-center flex py-1">
+        <div class="col-4">
+            <input type="hidden" name="Latitude" value="@Model.Latitude" id="lat" class="form-control" />
+        </div>
+        <div class="col-4">
+            <input type="hidden" name="Longitude" value="@Model.Longitude" id="lon" class="form-control" />
+        </div>
+    </div>
+    @* Зберегти готель до бази даних *@
+    <div class="d-flex justify-content-center my-3">
+        <button class="btn btn-primary" type="submit">Зберегти</button>
+    </div>
+</form>
+
+<style>
+    #map{
+        border: 2px solid green;
+        border-radius: 10px;
+        box-shadow: 5px 5px 5px;
+        height: 300px;
+    }
+</style>
+
+@section Scripts {
+    <link href="~/leaflet/leaflet.min.css" rel="stylesheet" />
+    <script src="~/leaflet/leaflet.min.js"></script>
+    <script>
+
+        let counter = 0;
+        $('#add-more').on('click', function () {
+            if (counter < 2) {
+                $('#additional-amounts').append('<div><input type="text" class="form-control mt-2" placeholder="Enter additional price" /><button type="button" class="btn btn-danger mt-2 remove-button">Remove</button></div>');
+                counter++;
+            } else {
+                alert('Maximum 2 additional fields allowed');
+            }
+        });
+
+        $(document).on('click', '.remove-button', function () {
+            $(this).closest('div').remove();
+            counter--;
+        });
+
+
+        let map, marker;
+
+        $(function () {
+
+            map = L.map('map').setView([50.421118919183115, 30.515624983236197], 13);
+            map.on('click', addMarker);
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+        });
+
+        function addMarker(e) {
+            if (marker == null)
+                marker = new L.marker(e.latlng).addTo(map);
+            else
+                marker.setLatLng(e.latlng);
+
+            $("#lat").val(e.latlng.lat);
+            $("#lon").val(e.latlng.lng);
+
+            // Reverse geocode the location
+            var latlng = e.latlng;
+            var url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}`;
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                success: function (data) {
+                    var address = data.address;
+                    $("#Zipcode").val(address.postcode);
+                    $("#City").val(address.town ? address.town : address.vallage ? address.vallage : address.city)
+                    $("#Addres").val(address.road + "," + address.suburb + "," + address.house_number);
+                }
+            });
+        }
+
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    
+}

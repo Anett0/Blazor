@@ -1,0 +1,62 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model List<ProjectInit.Core.Entities.Pet>
+
+@{
+    ViewData["Title"] = "Список тварин";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<header>
+    <h1>@ViewData["Title"]</h1>
+    <div>
+        <a href="/Pet/Create" class="btn btn-success float-end ">Додати тварину</a>
+        <button id="toggle-button" class="btn btn-primary float-end" style="margin-right:3px;">Картки</button>
+    </div>
+</header>
+
+<body>
+    <div id="table-container">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Ім'я</th>
+                    <th>Тип</th>
+                    <th>Фото</th>
+                    <th>Користувач</th>
+                    <th>Статус</th>
+                    <th>CRUD</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pet in Model)
+                {
+                    <tr>
+                        <td>@pet.Name</td>
+                        <td>@pet.Type</td>
+                        <td>
+                            <img style="width: 105px" alt="..." src="@pet.ImagePath" />
+                        </td>
+                        <td>@(pet.User != null ? pet.User.FullName : "Unknow")</td>
+                        <td>@pet.Status</td>
+                        <td>
+                            <a href="/Pet/View/@pet.Id" class="btn btn-primary">Детально</a>
+                            <a href="/Pet/Edit/@pet.Id" class="btn btn-warning">Редагувати</a>
+                            <form asp-action="Delete" method="post" asp-route-id="@pet.Id">
+                                <input type="hidden" asp-for="@pet.Id" />
+                                <button type="submit" class="btn btn-danger">Видалення</button>
+                            </form>
+                            <form asp-action="Accept" method="post" asp-route-id="@pet.Id">
+                                <button class="btn btn-success">Accept</button>
+                            </form>
+                            <form asp-action="Reject" method="post" asp-route-id="@pet.Id">
+                                <button class="btn btn-warning">Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    
+</body>
+
+
