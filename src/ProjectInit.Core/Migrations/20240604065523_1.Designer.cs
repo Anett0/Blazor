@@ -12,15 +12,15 @@ using ProjectInit.Core.Context;
 namespace ProjectInit.Core.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20240508131131_2")]
-    partial class _2
+    [Migration("20240604065523_1")]
+    partial class _1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.3")
+                .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -55,15 +55,15 @@ namespace ProjectInit.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2f54a027-cd75-41bf-8914-d6896dc12573"),
-                            ConcurrencyStamp = "2f54a027-cd75-41bf-8914-d6896dc12573",
+                            Id = new Guid("acda6b85-f5f9-4fa0-9f15-ffca0cfc656e"),
+                            ConcurrencyStamp = "acda6b85-f5f9-4fa0-9f15-ffca0cfc656e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("3a618d90-e934-44e8-95a2-55e4ef2848e8"),
-                            ConcurrencyStamp = "3a618d90-e934-44e8-95a2-55e4ef2848e8",
+                            Id = new Guid("8bbdc031-c8c5-4749-af79-8bc24bee0300"),
+                            ConcurrencyStamp = "8bbdc031-c8c5-4749-af79-8bc24bee0300",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         });
@@ -120,12 +120,10 @@ namespace ProjectInit.Core.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -157,13 +155,13 @@ namespace ProjectInit.Core.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("e0e0576f-270f-4348-bab5-f442783c4dd4"),
-                            RoleId = new Guid("2f54a027-cd75-41bf-8914-d6896dc12573")
+                            UserId = new Guid("c07534ff-5a02-4cff-8155-fb0a20326fbe"),
+                            RoleId = new Guid("acda6b85-f5f9-4fa0-9f15-ffca0cfc656e")
                         },
                         new
                         {
-                            UserId = new Guid("e0e0576f-270f-4348-bab5-f442783c4dd4"),
-                            RoleId = new Guid("3a618d90-e934-44e8-95a2-55e4ef2848e8")
+                            UserId = new Guid("c07534ff-5a02-4cff-8155-fb0a20326fbe"),
+                            RoleId = new Guid("8bbdc031-c8c5-4749-af79-8bc24bee0300")
                         });
                 });
 
@@ -173,12 +171,10 @@ namespace ProjectInit.Core.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -436,35 +432,35 @@ namespace ProjectInit.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e0e0576f-270f-4348-bab5-f442783c4dd4"),
+                            Id = new Guid("c07534ff-5a02-4cff-8155-fb0a20326fbe"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "99455ba3-9e15-48cc-b476-e5419027f75b",
+                            ConcurrencyStamp = "877e166d-6bf1-464e-91be-b51c538536ae",
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Анна Стерник",
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEH7YJOaow1QRRL7T7PGaYRQrUimTgjvB0TdGX2w30uDdiose77W013ESww711PYNkg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEA5bW8og0C5ULSo7gmDaWd8fnrtXiqlq9aWh18W9n3jHXRMKRvd1+Dc55dUvClmCpg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d7d2ea54-314f-4289-a13d-507c4058b240",
+                            SecurityStamp = "bc5f6004-2d63-4c62-8495-a42b67f44119",
                             TwoFactorEnabled = false,
                             UserName = "admin@gmail.com"
                         },
                         new
                         {
-                            Id = new Guid("448c51c4-defd-4ab2-8e86-62e9c2cd1265"),
+                            Id = new Guid("21bd8c69-979d-46ea-a724-a84e5e5a235d"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "81d68582-f2e9-4e43-9586-5e19b00f466f",
+                            ConcurrencyStamp = "2ad54882-04a4-422d-94c5-ec134889ce1a",
                             Email = "user@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Максим Поліщук",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@GMAIL.COM",
                             NormalizedUserName = "USER@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEA9hcCnp6eq4aEJk4An1B1iKnMPdTIvjBb0RTpsEn5TfqZm42sP6mQHXsI7kaNNimw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDR7xGOxYDi+BN4dL0+MenPznDmog4xnTVLVuc7J6ze/hVyqQJg/rksDMGynmWYQ4A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "fbe5e5f7-726b-4851-b905-6e9f43d9ecb2",
+                            SecurityStamp = "444f69cc-587d-4d17-9e33-4b82cff8b4dd",
                             TwoFactorEnabled = false,
                             UserName = "user@gmail.com"
                         });

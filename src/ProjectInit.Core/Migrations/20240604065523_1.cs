@@ -118,8 +118,8 @@ namespace ProjectInit.Core.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -163,8 +163,8 @@ namespace ProjectInit.Core.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -303,8 +303,8 @@ namespace ProjectInit.Core.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("69c9c0fa-3358-44fc-bf4c-52496bbce6c6"), "69c9c0fa-3358-44fc-bf4c-52496bbce6c6", "Admin", "ADMIN" },
-                    { new Guid("a56bce5d-2008-4d81-b21d-8eb7e7d53a4d"), "a56bce5d-2008-4d81-b21d-8eb7e7d53a4d", "Teacher", "TEACHER" }
+                    { new Guid("8bbdc031-c8c5-4749-af79-8bc24bee0300"), "8bbdc031-c8c5-4749-af79-8bc24bee0300", "Teacher", "TEACHER" },
+                    { new Guid("acda6b85-f5f9-4fa0-9f15-ffca0cfc656e"), "acda6b85-f5f9-4fa0-9f15-ffca0cfc656e", "Admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
@@ -312,8 +312,8 @@ namespace ProjectInit.Core.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { new Guid("3a7527e1-1ac4-4d8c-8708-537a6fff2232"), 0, "53414835-9332-4b42-8636-bfd36f7960b7", "user@gmail.com", true, "Максим Поліщук", false, null, "USER@GMAIL.COM", "USER@GMAIL.COM", "AQAAAAIAAYagAAAAEIYULq07591OFcUfrrLhEMEP6Sf1gAtf47aZIKM/sWj27BFnAIHU72x7PYNwoxibaA==", null, false, "73fbe5e7-4f36-4568-b718-e7744a5c4bec", false, "user@gmail.com" },
-                    { new Guid("8d86d609-21ee-4a9c-8949-1c197592ec6e"), 0, "f38d5e94-c533-4188-98d0-30dfb4e85eb1", "admin@gmail.com", true, "Анна Стерник", false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAIAAYagAAAAENyaN22XuowlW7mch7ieox+/lNJ8gtpz0D9ExHXPj6neps9OcABPr+mQyUMyQq/w0w==", null, false, "0a55c299-4bfd-4f0e-a3f2-1505311e162d", false, "admin@gmail.com" }
+                    { new Guid("21bd8c69-979d-46ea-a724-a84e5e5a235d"), 0, "2ad54882-04a4-422d-94c5-ec134889ce1a", "user@gmail.com", true, "Максим Поліщук", false, null, "USER@GMAIL.COM", "USER@GMAIL.COM", "AQAAAAIAAYagAAAAEDR7xGOxYDi+BN4dL0+MenPznDmog4xnTVLVuc7J6ze/hVyqQJg/rksDMGynmWYQ4A==", null, false, "444f69cc-587d-4d17-9e33-4b82cff8b4dd", false, "user@gmail.com" },
+                    { new Guid("c07534ff-5a02-4cff-8155-fb0a20326fbe"), 0, "877e166d-6bf1-464e-91be-b51c538536ae", "admin@gmail.com", true, "Анна Стерник", false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAIAAYagAAAAEA5bW8og0C5ULSo7gmDaWd8fnrtXiqlq9aWh18W9n3jHXRMKRvd1+Dc55dUvClmCpg==", null, false, "bc5f6004-2d63-4c62-8495-a42b67f44119", false, "admin@gmail.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -321,8 +321,8 @@ namespace ProjectInit.Core.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("69c9c0fa-3358-44fc-bf4c-52496bbce6c6"), new Guid("8d86d609-21ee-4a9c-8949-1c197592ec6e") },
-                    { new Guid("a56bce5d-2008-4d81-b21d-8eb7e7d53a4d"), new Guid("8d86d609-21ee-4a9c-8949-1c197592ec6e") }
+                    { new Guid("8bbdc031-c8c5-4749-af79-8bc24bee0300"), new Guid("c07534ff-5a02-4cff-8155-fb0a20326fbe") },
+                    { new Guid("acda6b85-f5f9-4fa0-9f15-ffca0cfc656e"), new Guid("c07534ff-5a02-4cff-8155-fb0a20326fbe") }
                 });
 
             migrationBuilder.CreateIndex(

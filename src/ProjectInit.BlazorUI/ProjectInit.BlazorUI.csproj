@@ -13,6 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ProjectInit.Core\ProjectInit.Core.csproj" />
+    <ProjectReference Include="..\ProjectInit.Infrastructure\ProjectInit.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
   </ItemGroup>
 

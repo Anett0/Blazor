@@ -20,12 +20,12 @@ namespace ProjectInit.Infrastructure.DTOs
     }
     public class PetCreateDto
     {
-        public string? Name { get; set; }
-        public string? Type { get; set; }
-        public string? ImagePath { get; set; } = "/img/hotels/no_photo.jpg";
-        public string? Status { get; set; }
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public string ImagePath { get; set; } = "/img/hotels/no_photo.jpg";
+        public string Status { get; set; }
         [NotMapped]
-        public IFormFile? ImageFile { get; set; }
+        public IFormFile ImageFile { get; set; }
     }
     public class PetUpdateDto
     {

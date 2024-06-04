@@ -1,0 +1,102 @@
+﻿@page "/pets"
+@using ProjectInit.Infrastructure.DTOs
+@inject NavigationManager Navigation
+@inject HttpClient Http
+
+<PageTitle>Список тварин</PageTitle>
+
+<header>
+    <h1>Список тварин</h1>
+    <div>
+        <NavLink href="/Pets/Create">
+            <button class="btn btn-success float-end">Додати тварину</button>
+        </NavLink>
+    </div>
+</header>
+
+<div id="table-container">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Ім'я</th>
+                <th>Тип</th>
+                <th>Фото</th>
+                <th>Статус</th>
+                <th>CRUD</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pet in Pets)
+            {
+                <tr>
+                    <td>@pet.Name</td>
+                    <td>@pet.Type</td>
+                    <td>
+                        <img style="width: 105px" alt="..." src="@pet.ImagePath" />
+                    </td>
+                    <td>@pet.Status</td>
+                    <td>
+                        <button @onclick="@(() => ViewPet(pet.Id))" class="btn btn-primary">Детально</button>
+                        <button @onclick="@(() => EditPet(pet.Id))" class="btn btn-warning">Редагувати</button>
+                        <button @onclick="@(() => DeletePet(pet.Id))" class="btn btn-danger">Видалення</button>
+                        <button @onclick="@(() => AcceptPet(pet.Id))" class="btn btn-success">Accept</button>
+                        <button @onclick="@(() => RejectPet(pet.Id))" class="btn btn-warning">Reject</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private List<PetDto> Pets { get; set; } = new List<PetDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Pets = await Http.GetFromJsonAsync<List<PetDto>>("api/pets");
+    }
+
+    private void ToggleView()
+    {
+        // Implement toggle logic
+    }
+
+    private void ViewPet(Guid id)
+    {
+        Navigation.NavigateTo($"/Pet/View/{id}");
+    }
+
+    private void EditPet(Guid id)
+    {
+        Navigation.NavigateTo($"/Pet/Edit/{id}");
+    }
+
+    private async Task DeletePet(Guid id)
+    {
+        var response = await Http.PostAsync($"/api/pets/delete/{id}", null);
+        if (response.IsSuccessStatusCode)
+        {
+            Pets = Pets.Where(p => p.Id != id).ToList();
+        }
+    }
+
+    private async Task AcceptPet(Guid id)
+    {
+        var response = await Http.PostAsync($"/api/pets/accept/{id}", null);
+        if (response.IsSuccessStatusCode)
+        {
+            var pet = Pets.FirstOrDefault(p => p.Id == id);
+            if (pet != null) pet.Status = "Accepted"; // Update status as needed
+        }
+    }
+
+    private async Task RejectPet(Guid id)
+    {
+        var response = await Http.PostAsync($"/api/pets/reject/{id}", null);
+        if (response.IsSuccessStatusCode)
+        {
+            var pet = Pets.FirstOrDefault(p => p.Id == id);
+            if (pet != null) pet.Status = "Rejected"; // Update status as needed
+        }
+    }
+}
